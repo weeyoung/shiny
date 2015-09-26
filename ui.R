@@ -17,10 +17,10 @@ shinyUI(
           tags$head(tags$title("Chat using Shiny")),
           
           # Create the header
-          div(class="span6", style="padding: 0px 0px;",
+          div(class="span6",
               h1("Chat using Shiny"), 
-              h4("Words Frquencies are displayed at the top")
-          ), div(class="span6", id="play-nice",
+              h4("Words Frquencies are displayed at the top. Words are captured from chat.")
+          ), div(class="span6", id="sub-words",
                  "Words are monitored =)."
           )
           
@@ -49,10 +49,10 @@ shinyUI(
         sidebarPanel(
           sliderInput("freq",
                       "Minimum Frequency:",
-                      min = 1,  max = 50, value = 2),
+                      min = 1,  max = 10, value = 8),
           sliderInput("max",
                       "Maximum Number of Words:",
-                      min = 1,  max = 300,  value = 100)
+                      min = 1,  max = 100,  value = 10)
         ),
         
         # The right sidebar
@@ -60,7 +60,7 @@ shinyUI(
           # Let the user define his/her own ID
           textInput("user", "Your User ID:", value=""),
           tags$hr(),
-          h5("Connected Users"),
+          h5("Current Users"),
           # Create a spot for a dynamic UI containing the list of users.
           uiOutput("userList"),
           tags$hr(),

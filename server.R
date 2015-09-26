@@ -126,9 +126,9 @@ shinyServer(function(input, output, session) {
   
   # Dynamically create the UI for the chat window.
   output$chat <- renderUI({
-    if (length(vars$chat) > 500){
-      # Too long, use only the most recent 500 lines
-      vars$chat <- vars$chat[(length(vars$chat)-500):(length(vars$chat))]
+    if (length(vars$chat) > 300){
+      # Too long, use only the most recent 300 lines
+      vars$chat <- vars$chat[(length(vars$chat)-300):(length(vars$chat))]
     }
     # Save the chat object so we can restore it later if needed.
     saveRDS(vars$chat, "chat.Rds")
@@ -146,7 +146,7 @@ shinyServer(function(input, output, session) {
     myCorpus = tm_map(myCorpus, removePunctuation)
     myCorpus = tm_map(myCorpus, removeNumbers)
     myCorpus = tm_map(myCorpus, removeWords,
-                      c(stopwords("SMART"), "thy", "thou", "thee", "the", "and", "but"))
+                      c("the", "and", "but"))
     
     myDTM = TermDocumentMatrix(myCorpus,
                                control = list(minWordLength = 1))
@@ -174,8 +174,10 @@ shinyServer(function(input, output, session) {
   
   output$plot <- renderPlot({
     v <- terms()
-    wordcloud_rep(names(v), v, scale=c(4,0.5),
+    pal <- brewer.pal(9, "BuGn")
+    pal <- pal[-(1:2)]
+    wordcloud_rep(names(v), v, scale=c(8,0.5),
                   min.freq = input$freq, max.words=input$max,
-                  colors=brewer.pal(8, "Dark2"))
+                  colors=pal)
   })
 })
